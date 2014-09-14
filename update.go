@@ -19,7 +19,7 @@ type Cloudflare struct {
 	Token      string
 	Domain     string
 	RecordID   string
-	SubDomain  string
+	Name       string
 	RecordType string
 }
 
@@ -84,7 +84,7 @@ func Update(cloudflare *Cloudflare) {
 	err = client.UpdateRecord(cloudflare.Domain, cloudflare.RecordID, &go_cloudflare.UpdateRecord{
 		Content: ipInfo.IP,
 		Type:    cloudflare.RecordType,
-		Name:    cloudflare.SubDomain,
+		Name:    cloudflare.Name,
 	})
 	if err != nil {
 		log.Fatal("Problem with clouflare client: ", err)

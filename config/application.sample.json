@@ -6,7 +6,7 @@
         "Token": "<CLOUDFLARE_ACCOUNT_TOKEN>",
         "Domain": "<YOUR_DOMAIN>",
         "RecordID": "<THE_ID_OF_THE_RECORD_TO_KEEP_UPDATED>",
-        "SubDomain": "<SUBDOMAIN>",
+        "Name": "<FULL_NAME_OF_RECORD>",
         "RecordType": "A"
     }
 }
