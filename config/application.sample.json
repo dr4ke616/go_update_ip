@@ -1,0 +1,12 @@
+{
+    "Name": "Ip Updater",
+    "Frequencey": 10,
+    "Cloudflare": {
+        "Email": "<CLOUDFLARE_EMAIL_ADDRESS>",
+        "Token": "<CLOUDFLARE_ACCOUNT_TOKEN>",
+        "Domain": "<YOUR_DOMAIN>",
+        "RecordID": "<THE_ID_OF_THE_RECORD_TO_KEEP_UPDATED>",
+        "SubDomain": "<SUBDOMAIN>",
+        "RecordType": "A"
+    }
+}
