@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/dr4ke616/go_cloudflare"
 	"log"
 	"os"
 	"time"
@@ -10,6 +11,16 @@ import (
 type Configuration struct {
 	Name       string
 	Frequencey time.Duration
+	Cloudflare Cloudflare `json:"Cloudflare"`
+}
+
+type Cloudflare struct {
+	Email      string
+	Token      string
+	Domain     string
+	RecordID   string
+	SubDomain  string
+	RecordType string
 }
 
 func load_configuration(config ...string) (c Configuration, err_ error) {
@@ -38,9 +49,32 @@ func load_configuration(config ...string) (c Configuration, err_ error) {
 	return configuration, nil
 }
 
-func update() {
+func update(cloudflare *Cloudflare) {
 	log.Println("About to check status of IP")
 
+	client, err := go_cloudflare.NewClient(cloudflare.Email, cloudflare.Token)
+	if err != nil {
+		log.Fatal("Problem with clouflare client: ", err)
+		os.Exit(1)
+	}
+
+	records, err := client.RetrieveARecord(cloudflare.Domain, cloudflare.RecordID)
+	if err != nil {
+		log.Fatal("Problem with clouflare client: ", err)
+		os.Exit(1)
+	}
+
+	log.Println("Records:", records)
+
+	err = client.UpdateRecord(cloudflare.Domain, cloudflare.RecordID, &go_cloudflare.UpdateRecord{
+		Content: "80.111.125.147",
+		Type:    cloudflare.RecordType,
+		Name:    cloudflare.SubDomain,
+	})
+	if err != nil {
+		log.Fatal("Problem with clouflare client: ", err)
+		os.Exit(1)
+	}
 }
 
 func main() {
@@ -54,7 +88,7 @@ func main() {
 
 	log.Println("Starting", config.Name)
 	for {
-		update()
+		update(&config.Cloudflare)
 		time.Sleep(config.Frequencey * time.Second)
 	}
 }
